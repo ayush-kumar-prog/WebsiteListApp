@@ -3,41 +3,43 @@
 //  WebsiteListAppUITests
 //
 //  Created by Ayush Kumar on 4/13/25.
-//
+/**
+ Key points:
+ */
 
 import XCTest
 
 final class WebsiteListAppUITests: XCTestCase {
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
+        // In UI tests it’s best to stop right away if a failure occurs.
         continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    @MainActor
-    func testExample() throws {
-        // UI tests must launch the application that they test.
+    func testLoadingTableView() throws {
         let app = XCUIApplication()
         app.launch()
 
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        // Wait for list to appear
+        let firstCell = app.tables.cells.element(boundBy: 0)
+        let exists = firstCell.waitForExistence(timeout: 5)
+        XCTAssertTrue(exists, "The first cell should exist, meaning data loaded successfully.")
     }
 
-    @MainActor
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
-        }
+    func testSearchFunction() throws {
+        let app = XCUIApplication()
+        app.launch()
+
+        // Type in the search field
+        let searchField = app.textFields["Search websites..."]
+        XCTAssertTrue(searchField.waitForExistence(timeout: 2))
+        searchField.tap()
+        searchField.typeText("google")
+
+        // Check that the table updates
+        let firstCell = app.tables.cells.element(boundBy: 0)
+        let cellExists = firstCell.waitForExistence(timeout: 2)
+        XCTAssertTrue(cellExists)
+        // Optionally, check cell label text if needed
     }
 }
