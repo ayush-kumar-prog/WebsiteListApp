@@ -9,8 +9,8 @@ import Foundation
 
 /// Represents a website with metadata
 struct Website: Codable, Identifiable, Equatable {
-    // Since JSON does not provide an ID, we supply a default here.
-    // We exclude it from decoding by declaring custom CodingKeys.
+    // Since JSON does not provide an ID, I supply a default here.
+    // I exclude it from decoding by declaring custom CodingKeys.
     let id = UUID()
     
     let name: String

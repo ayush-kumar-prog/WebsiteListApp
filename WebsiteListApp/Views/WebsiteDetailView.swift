@@ -6,16 +6,18 @@
 
 /**
  Key points:
- - We wrap the .navigationBarTitleDisplayMode(.inline) modifier within #if os(iOS) so that it’s applied only on iOS.
+ - I wrap the .navigationBarTitleDisplayMode(.inline) modifier within #if os(iOS) so that it’s applied only on iOS.
  - The preview also uses a phone trait.
+ - modular action handling: Extracting the website-opening logic into a separate private function: makes the button’s action clear and simplifies potential future modifications.
+
  */
 
 import SwiftUI
 
 struct WebsiteDetailView: View {
     let website: Website
-    @Environment(\.openURL) var openURL
-
+    @Environment(\.openURL) private var openURL
+    
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
@@ -28,20 +30,16 @@ struct WebsiteDetailView: View {
                 }
                 .frame(width: 100, height: 100)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
-
+                
                 Text(website.name)
                     .font(.largeTitle)
                     .fontWeight(.bold)
-
+                
                 Text(website.description)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
-
-                Button {
-                    if let url = URL(string: website.url) {
-                        openURL(url)
-                    }
-                } label: {
+                
+                Button(action: openWebsite) {
                     Text("Open Website")
                         .font(.headline)
                         .foregroundColor(.white)
@@ -53,15 +51,20 @@ struct WebsiteDetailView: View {
             .padding()
         }
         .navigationTitle(website.name)
-        // Wrap navigationBarTitleDisplayMode for iOS only.
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
     }
+    
+    private func openWebsite() {
+        if let url = URL(string: website.url) {
+            openURL(url)
+        }
+    }
 }
 
-// MARK: - PREVIEW
-#if DEBUG
+///improved preview with navigation stack: The preview wraps the detail view in a NavigationStack and specifies a device using .previewDevice("iPhone 14"), providing a closer approximation to its runtime appearance.
+
 struct WebsiteDetailView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
@@ -77,4 +80,3 @@ struct WebsiteDetailView_Previews: PreviewProvider {
         .previewDevice("iPhone 14")
     }
 }
-#endif

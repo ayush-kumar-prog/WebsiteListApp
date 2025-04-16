@@ -14,6 +14,7 @@ final class WebsiteListAppUITestsLaunchTests: XCTestCase {
     }
 
     override func setUpWithError() throws {
+        // Stop immediately when a failure occurs.
         continueAfterFailure = false
     }
 
@@ -21,11 +22,12 @@ final class WebsiteListAppUITestsLaunchTests: XCTestCase {
     func testLaunch() throws {
         let app = XCUIApplication()
         app.launch()
+        
 
-        // Insert steps here to perform after app launch but before taking a screenshot,
-        // such as logging into a test account or navigating somewhere in the app
 
-        let attachment = XCTAttachment(screenshot: app.screenshot())
+        // Take a screenshot and attach it for debugging purposes.
+        let screenshot = app.screenshot()
+        let attachment = XCTAttachment(screenshot: screenshot)
         attachment.name = "Launch Screen"
         attachment.lifetime = .keepAlways
         add(attachment)

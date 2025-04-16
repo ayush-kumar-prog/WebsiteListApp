@@ -9,34 +9,39 @@
  - Dependency Injection via init(service:).
  - Separation of Concerns: The ViewModel does all data fetching + logic. The SwiftUI View just displays it.
  - MVVM: WebsitesViewModel is the “VM,” and Website is the “Model,” while the SwiftUI views are the “View.”
+ - marked as final class to not let it be subclasssed
+ - minor improvement: filter functionality converts the search text to lowercase once for efficiency and future    extension with more websites
+    
+ 
  */
 
 
 import SwiftUI
-import Combine
 
-/// The ViewModel for displaying and manipulating the list of websites
-class WebsitesViewModel: ObservableObject {
-    // Published properties for SwiftUI updates
+/// The ViewModel for displaying and manipulating the list of websites.
+final class WebsitesViewModel: ObservableObject {
+    // MARK: - Published Properties
     @Published private(set) var websites: [Website] = []
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
     @Published var searchText: String = ""
+    
+    // Keep track of favorites by storing their IDs.
+    @Published var favorites: Set<UUID> = []
+    // Optionally, show only favorites.
+    @Published var showFavoritesOnly: Bool = false
 
-    // Our data-fetching service, implementing the protocol
+    // Data-fetching service.
     private let service: WebsiteFetchingService
 
-    // For canceling any Combine publishers if we used them
-    private var cancellables = Set<AnyCancellable>()
-
-    // Inject the service so we can swap for testing
-    init(service: WebsiteFetchingService = NetworkService()) {
+    // MARK: - Initialization
+    init(service: WebsiteFetchingService) {
         self.service = service
-        // Optionally, fetch the websites right away
         fetchWebsites()
     }
 
-    // MARK: - Fetching
+    // MARK: - Data Fetching
+    /// Fetches websites via the service and updates published properties on the main thread.
     func fetchWebsites() {
         isLoading = true
         errorMessage = nil
@@ -48,7 +53,6 @@ class WebsitesViewModel: ObservableObject {
 
                 switch result {
                 case .success(let sites):
-                    // Could animate insertion
                     withAnimation {
                         self.websites = sites
                     }
@@ -60,21 +64,48 @@ class WebsitesViewModel: ObservableObject {
     }
 
     // MARK: - Sorting
+    /// Sorts the list of websites by name (case insensitive) with animation.
     func sortByName() {
-        // Sort by name ignoring case
         withAnimation {
             websites.sort { $0.name.lowercased() < $1.name.lowercased() }
         }
     }
 
-    // MARK: - Filtering
-    var filteredWebsites: [Website] {
-        guard !searchText.isEmpty else {
-            return websites
+    // MARK: - Favorites Logic
+    /// Returns a Boolean indicating whether the website is marked as favorite.
+    func isFavorite(_ website: Website) -> Bool {
+        favorites.contains(website.id)
+    }
+
+    /// Toggles the favorite status of the provided website with animation.
+    func toggleFavorite(_ website: Website) {
+        withAnimation {
+            if isFavorite(website) {
+                favorites.remove(website.id)
+            } else {
+                favorites.insert(website.id)
+            }
         }
-        return websites.filter { website in
-            website.name.localizedCaseInsensitiveContains(searchText) ||
-            website.description.localizedCaseInsensitiveContains(searchText)
+    }
+
+    // MARK: - Filtering
+    /// Returns the filtered list of websites.
+    /// - If `showFavoritesOnly` is enabled, the list is first filtered to include only favorites.
+    /// - If `searchText` is not empty, the list is further filtered using a case-insensitive search on the website’s name and description.
+    var filteredWebsites: [Website] {
+        var base = websites
+        
+        // Filter by favorites if enabled.
+        if showFavoritesOnly {
+            base = base.filter { isFavorite($0) }
+        }
+        
+        // If search text is provided, apply text-based filtering.
+        guard !searchText.isEmpty else { return base }
+        let lowercasedQuery = searchText.lowercased()
+        return base.filter { site in
+            site.name.lowercased().contains(lowercasedQuery) ||
+            site.description.lowercased().contains(lowercasedQuery)
         }
     }
 }
