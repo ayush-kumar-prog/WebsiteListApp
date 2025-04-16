@@ -25,6 +25,14 @@ WebsiteListApp/ ├─ Models/ ├─ Services/ ├─ ViewModels/ ├─ Views/
 2. Ensure you have iOS 17/18 SDK (or the relevant installed).
 3. Press **Run** (⌘ + R) to launch on the Simulator.
 
+## Package Dependencies ##
+
+This project uses the following Swift packages (added via Swift Package Manager):
+
+Kingfisher, purpose: Image downloading & caching. URL: https://github.com/onevcat/Kingfisher
+ViewInspector (Dev only), purpose: Unit testing SwiftUI views. URL: https://github.com/nalexn/ViewInspector
+Xcode will automatically resolve these packages when you open the project.
+
 ## How to Test
 
 - **Unit Tests**: `Product → Test` (⌘ + U).
