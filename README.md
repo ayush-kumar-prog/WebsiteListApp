@@ -18,7 +18,7 @@ A SwiftUI iOS app that fetches a list of popular websites from a remote JSON and
 - **Test-Driven Development (TDD):** Early iterations were driven by unit tests, and comprehensive UI tests now validate critical user flows.
 
 ## Project Structure
-WebsiteListApp/ ├─ Models/ ├─ Services/ ├─ ViewModels/ ├─ Views/ ├─ Tests/ └─ UITests/
+Root/ ├─ WebsiteListApp/ ├─ Models/ ├─ Services/ ├─ ViewModels/ ├─ Views/ ├─ Tests/ └─ UITests/
 
 ## How to Run
 
