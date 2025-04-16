@@ -70,6 +70,8 @@ I chose to do everything in the main branch because of solo development and the 
   Make users be able to log in
 - **Make social media feature:**  
   Include a tab to fetch most popular websites, and users to see other users website lists
+- **Test app on testflight and launch on app store:**  
+  Would test and get feedback of app from apples testflight, and publish to the app store
 
 ## Author
 
