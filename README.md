@@ -1,7 +1,8 @@
 # WebsiteListApp
 
 A SwiftUI iOS app that fetches a list of popular websites from a remote JSON and displays them in a searchable, sortable list. This project follows **MVVM** architecture with protocol-based service injection, making it highly testable and extensible.
-## No GenAI was used in the making of this project.
+# Time taken to complete assignment: ~5 hours
+## No GenAI was used in the making of this project. 
 
 ## Features
 
