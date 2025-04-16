@@ -22,7 +22,7 @@ Root/ ├─ WebsiteListApp/ ├─ Models/ ├─ Services/ ├─ ViewModels/ 
 
 ## How to Run
 
-1. Open `WebsiteListApp.xcodeproj` or `.xcworkspace` in Xcode (15+).
+1. Open root directory in xcode (15+ for reliable results) or open`WebsiteListApp.xcodeproj` or `.xcworkspace` in Xcode (15+) 
 2. Ensure you have iOS 17/18 SDK (or the relevant installed).
 3. Press **Run** (⌘ + R) to launch on the Simulator.
 
@@ -64,6 +64,10 @@ I began this project with a strong commitment to Test-Driven Development (TDD). 
   Introduce more polished animations and transitions to further enhance the user experience.
 - **Platform Support:**  
   Optimize the interface for iPad, macOS Catalyst, and other Apple platforms.
+- **Account feature:**  
+  Make users be able to log in
+- **Make social media feature:**  
+  Include a tab to fetch most popular websites, and users to see other users website lists
 
 ## Author
 
