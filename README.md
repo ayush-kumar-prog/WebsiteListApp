@@ -45,6 +45,8 @@ Xcode will automatically resolve these packages when you open the project.
 
 I began this project with a strong commitment to Test-Driven Development (TDD). Early on, I wrote extensive unit tests for the core Website model, networking services, and view model logic. These tests drove the design and ensured a modular, testable architecture from the start. However, as the project scope expanded and deadlines loomed, I pivoted my focus to deliver a complete and robust UI and functionality. Comprehensive UI tests now verify most critical user flows, even though many of the initial unit tests have been consolidated or left as legacy artifacts.
 
+I chose to do everything in the main branch because of solo development and the size of the project was not big. Had this been collaborative or a larger project with diverse modules, feature branches would have been likely made.
+
 ### What I’m Particularly Proud Of
 
 - **Robust Architecture:**  
